@@ -2,12 +2,14 @@
 
 ## Installing SSF2
 
+The install script handles everything automatically - just follow the steps below.
+
 1. Open the folder where you want SSF2 to be installed with your File Manager GUI
    (Note: A folder named `SSF2` will be created here)
 
 2. Right-click and select **Open in Terminal**
 
-3. Download the script:
+3. Download the install script (automates the installation steps):
    ```bash
    wget https://github.com/DavoDC/SSF2_Resources/raw/main/scripts/INSTALL_SSF2.sh
    ```
@@ -17,7 +19,7 @@
    chmod u+x INSTALL_SSF2.sh
    ```
 
-5. Run the script and follow the prompts:
+5. Run it and follow the prompts:
    ```bash
    ./INSTALL_SSF2.sh
    ```
