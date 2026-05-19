@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Tests for dry-run mode in INSTALL_SSF2.sh
-# Usage: bash Scripts/SSF2/Tests/test_dry_run.sh
+# Usage: bash tests/test_dry_run.sh
 # Run from any directory - mocks curl, no network calls
 
 PASS=0
 FAIL=0
-INSTALL_SCRIPT="$(cd "$(dirname "$0")" && pwd)/../INSTALL_SSF2.sh"
+INSTALL_SCRIPT="$(cd "$(dirname "$0")" && pwd)/../scripts/INSTALL_SSF2.sh"
 
 # --- mock curl for URL checks ---
 MOCK_CURL_HTTP_CODE="200"
