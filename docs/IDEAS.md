@@ -2,8 +2,6 @@
 
 Ideas for scripts, tools, and improvements across the SSF2 ecosystem.
 
-Directive: `Claude_Workspace/ClaudeOnly/roadmap/directives/linux-files-yt.md`
-
 Reference video (previous): https://www.youtube.com/watch?v=vHMe8zDKM9A
 
 Video goal: full end-to-end walkthrough for Linux newcomers - showcase the https://github.com/DavoDC/SSF2_Resources repo, show the complete process (downloading the repo, extracting, cd-ing into the scripts folder, running the install script through all 3 install types). Walk through the steps in `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Video description should link to the repo and the guide.
