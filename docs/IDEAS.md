@@ -120,6 +120,8 @@ Next actions:
 
 ## TIER 4 - FAR FUTURE (very low priority)
 
+- **Verify Player Guide links** - check all links in index.md and the 7 section files: (1) index.md TOC links point to the correct .md files and anchor headings render/navigate correctly on GitHub, (2) external URLs in the guide are still live, (3) internal cross-section references resolve. Note: Google Doc anchor IDs (e.g. `{#1.-setup}`) may not work as GitHub anchor links - may need to replace with GitHub-style anchors derived from heading text.
+
 - **Verify Player Guide image placement** - some images may be mismatched (e.g. image2.png showed Format Factory instead of expected SSF2 content). Cross-check all 38 images against the HTML export (`RAW/SSF2 Player Guide Site/SSF2PlayerGuide.html`) in a browser to confirm each image appears in the correct section context.
 
 - **Auto-download oxipng in compress_images.sh** - currently oxipng must be manually placed in `RAW/`. Script could detect missing oxipng and download the correct release binary from https://github.com/oxipng/oxipng/releases automatically (detect OS/arch, download, verify hash).
