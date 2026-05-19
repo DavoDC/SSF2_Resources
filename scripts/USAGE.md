@@ -1,4 +1,4 @@
-# Using the Install Script
+# Using the Linux Install Script
 
 1. Open the folder where you want SSF2 to be installed with your File Manager GUI
    (Note: A folder named `SSF2` will be created here)
