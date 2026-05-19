@@ -4,37 +4,9 @@ Ideas for scripts, tools, and improvements across the SSF2 ecosystem.
 
 ---
 
-## Test Plan (for video)
-
-**Note:** Combine ANSI fix and user-facing scan in one Linux Mint session - both require testing all install types anyway.
-
-### Steps
-
-1. Linux Mint rig - uninstall any existing SSF2
-2. Run INSTALL_SSF2.sh, choose Native - verify installs and launches
-3. Uninstall, run again, choose Wine Install - verify
-4. Uninstall, run again, choose Wine Portable - verify
-5. Record video during a clean run of all 3
-
-### 3 Install Types - NOTE THIS ORDER
-
-| Type | Variable | Download | Description |
-|------|----------|----------|-------------|
-| Wine Port | `wine_port` | `SSF2BetaWindows.32bit.*.portable.zip` | Windows portable via Wine |
-| Wine Install | `wine_inst` | `SSF2BetaSetup.32bit.*.exe` | Windows installer via Wine |
-| Native | `native` | `SSF2BetaLinux.*.tar` | Linux native build |
-
----
-
-## Pre-Video Strategy
-
-Improve and test the script as much as possible before recording. The video is a showcase - the more polished the script, the better the impression. Aim to complete all TIER 0 items and as many TIER 2 items as practical before recording.
-
----
-
 ## TIER 0 - BLOCKING (must do before video)
 
-- **Verify CDN links and regex patterns** - confirm download URLs are live and filename patterns still match current CDN filenames
+Improve and test the script as much as possible before recording. The video is a showcase - the more polished, the better. Aim to complete all TIER 0 and as many TIER 2 items as practical first.
 
 - **Fix ANSI escape sequences in log file** - script outputs raw color codes to log (e.g. `[0;33m`) when stdout is redirected via tee. Fix: detect if stdout is a file, strip or disable color codes for log output
 
@@ -43,6 +15,8 @@ Improve and test the script as much as possible before recording. The video is a
 ## TIER 1 - MVP
 
 - **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Show complete process: downloading the repo, extracting, cd-ing into scripts folder, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
+
+  Recording plan: on Linux Mint rig, uninstall any existing SSF2, then test each install type in this order - Wine Port, Wine Install, Native (uninstall between each). Combine the ANSI fix user-facing scan with this session. Record a clean final run of all 3 types for the video.
 
 - **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Live sync between Google Drive and GitHub is a harder problem (far future - see TIER 4).
 
