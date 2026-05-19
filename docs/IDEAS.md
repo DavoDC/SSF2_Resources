@@ -4,99 +4,89 @@ Ideas for scripts, tools, and improvements across the SSF2 ecosystem.
 
 ---
 
-## TIER 0 - BLOCKING (must do before video)
+## TIER 0 - BLOCKING (must fix before video)
 
-Improve and test the script as much as possible before recording. The video is a showcase - the more polished, the better. Aim to complete all TIER 0 and as many TIER 1 items as practical first.
+Script correctness bugs that will crash the demo or silently corrupt the install for real users. The video is a showcase - every TIER 0 bug is a live failure risk. Fix all of these before recording.
 
-- **Fix ANSI escape sequences in log file** - script outputs raw color codes to log (e.g. `[0;33m`) when stdout is redirected via tee. Fix: detect if stdout is a file, strip or disable color codes for log output
+- **Fix ANSI escape sequences in log file** - script outputs raw color codes (e.g. `[0;33m`) when stdout is redirected via tee. Fix: detect if stdout is a terminal, strip or disable color codes when writing to log.
+
+- **No empty-URL guard before download** `[Critical]` - `extractDwlUrl` returns "" if the official page HTML or CDN layout changes. Script then calls `downloadWithFallback ""` -> wget fails cryptically -> `tar -xf` on a missing file -> cascading garbage. Add: if `dwlURL` is empty, print the page URL + chosen pattern and exit 1. This is the single most likely real-world break as the SSF2 site evolves.
+
+- **Unquoted paths break on spaces** `[High]` - `mkdir -p $installPath`, `cd $installPath`, `tar -xf $patt_native`, `rm $offURLfile`, and `install $1` are all unquoted. Any install folder with a space (e.g. `My Games`) breaks the install. Very common for GUI users who "Open in Terminal" from a Documents subfolder. Quote all variable expansions.
+
+- **`cd` failures not checked** `[High]` - `cd $installPath`, `cd SSF2BetaLinux.*/`, and `cd SSF2BetaWindows.32bit.*.portable` have no `|| exit`. If the glob does not match (failed download or extract), the script continues running in the wrong directory: runs `./trust-ssf2.sh` that does not exist there, prints bashrc advice with the wrong `pwd`. Append `|| { echo "..."; exit 1; }` to every `cd`.
+
+- **Stale repo references in script header and issue URL** `[Medium]` - the usage block tells users to `wget .../DavoDC/LinuxFiles/raw/main/Scripts/SSF2/INSTALL_SSF2.sh` (wrong repo) and the unsupported-distro message links `DavoDC/LinuxFiles/issues` (also wrong). Users following the embedded instructions get a 404. Update both to `DavoDC/SSF2_Resources`.
 
 ---
 
 ## TIER 1 - SCRIPT IMPROVEMENTS (do before video)
 
+### Correctness and robustness fixes
+
+- **No fail-fast (`set -euo pipefail`)** - script plows through every failure (failed apt, failed wget, failed cd). This is the meta-cause behind most cascading-failure issues. Add `set -euo pipefail` with care around intentional non-zero returns in `isNotInstalled` and glob expansions.
+
+- **Universal deps use Debian package names on all distros** - `install "libcanberra-gtk-module"`, `install "libnss3"`, `wine32`, and `winbind` are Debian names but are called unconditionally on dnf/pacman too - silent failures on Fedora/Arch. Map package names per `$PKG_MANAGER` or skip+warn on non-apt.
+
+- **Download filename vs extract pattern coupling** - real download uses `wget URL` (server-named file), but extraction uses `tar -xf $patt_native` / `unzip $patt_wine_port` globs. If the CDN's saved filename does not match the pattern, extraction silently finds nothing. Use `wget -O` to a known name or capture the downloaded filename.
+
+- **No download integrity check** - archive is extracted with zero size/checksum validation. A truncated download (Ctrl+C, flaky wifi) yields a confusing corrupt tar/zip error. Add a minimum-size sanity check; ideally publish and verify a checksum.
+
+- **Better error messages when download fails** - currently silent if wget fails mid-transfer. Show a clear message including the URL that failed and next-step guidance.
+
+- **`apt update` errors hidden** - `sudo apt update > /dev/null 2>&1` swallows mirror/network failures; Wine install then fails with no clue why. Keep stderr or print a one-line status.
+
+- **Invalid-choice exits 0** - bare `exit` after "Invalid choice!" returns success. Should be `exit 1` so callers and automation can detect failure.
+
+- **`isNotInstalled` has no default case** - if `$PKG_MANAGER` is unexpected, the `case` falls through returning 0 (= not installed), causing `install` to always attempt. Add a `*)` arm.
+
+### Functionality improvements
+
 - **`TRUST_SSF2_HERE.sh` - auto-detect correct run location** - script silently writes a useless trust config if run from the wrong folder. Add a pre-check: look for files always present in a native install (e.g. `data/`, `SSF2.x86_64`). If not found, print a clear error and exit.
 
-- **Auto-detect if Wine is installed** - skip Wine menu options entirely if Wine is not present on the system
+- **Auto-detect if Wine is installed** - skip Wine menu options entirely if Wine is not present on the system.
 
-- **Auto-detect existing SSF2 install and prompt for action** - if SSF2 already installed, show menu: (R)einstall, (Remove) only, (E)xit. Reinstall and Remove must each require double confirmation. Exit needs no confirmation.
+- **Auto-detect existing SSF2 install and prompt for action** - if SSF2 already installed, show menu: (R)einstall, (Remove) only, (E)xit. Reinstall and Remove must each require double confirmation.
 
-- **Better error messages when download fails** - currently silent if wget fails. Show a clear message with the URL that failed.
+- **Pre-flight summary + confirm** - before doing anything, print: detected distro, package manager, chosen version, install path, resolved download URL. One confirmation, then run unattended. Makes failures diagnosable and makes the video walkthrough clearer.
 
-- **Check for script updates** - compare version header in script against GitHub raw to detect if a newer version is available
+- **Pre-check URL reachability before big download** - the dry-run does a HEAD check; do the same on Linux before the actual download so a bad URL fails in 1 second instead of after a long timeout.
 
-- **Mine Discord for common install issues** - trawl the Linux SSF2 Discord community server (manually or programmatically) for recurring problems. Use findings to harden the script: auto-detect architecture, handle known edge cases, improve error messages for real failure modes.
+- **`sudo -v` keepalive upfront** - a single early `sudo -v` (refreshed in a background loop) avoids multiple password prompts scattered across separate `sudo` calls.
 
-- **Dry-run: show placeholder home path** - bashrc advice currently shows the repo path, not a meaningful simulated path. Show `/home/user/SSF2` placeholder in dry-run mode instead.
+- **Mine Discord for common install issues** - trawl the Linux SSF2 Discord channel for recurring problems. Use findings to harden the script: auto-detect architecture, handle known edge cases, improve error messages for real failure modes.
 
-- **Dry-run: skip `clear` at startup** - `clear` wipes terminal during dev/testing. Skip it when `DRY_RUN=true`.
+- **Check for script updates** - compare a version header in the script against GitHub raw to detect if a newer version is available.
 
-- **Dry-run: fix misleading wget skip banner** - `install "wget"` shows a skip banner in dry-run even though wget is unused (curl is used instead). Fix the wording.
+### Dry-run fixes
 
----
+- **Dry-run: show placeholder home path** - bashrc advice currently shows the repo path. Show `/home/user/SSF2` placeholder in dry-run mode instead.
 
-## SCRIPT AUDIT - INSTALL_SSF2.sh (2026-05-19)
+- **Dry-run: skip `clear` at startup** - `clear` wipes the terminal during dev/testing. Skip it when `DRY_RUN=true`.
 
-Static analysis of `scripts/INSTALL_SSF2.sh`. Each item tagged `[Severity / Priority]`. Severity = blast radius if it triggers. Priority = do-order (P0 = before video, P3 = nice-to-have). Items marked DUP overlap an existing tier item and are cross-referenced.
+- **Dry-run: fix misleading wget skip banner** - `install "wget"` shows a dry-run skip banner even though wget is unused in dry-run (curl is used instead). Fix the wording.
 
-### Correctness bugs (real failure modes)
+### Meta / prevention
 
-- **No empty-URL guard before download** `[Critical / P0]` - `extractDwlUrl` returns "" if the official page HTML or CDN host changes (the single most likely real-world break). Script then calls `downloadWithFallback ""` -> wget fails cryptically -> `tar -xf` on a missing file -> cascading garbage. Add: if `dwlURL` is empty, print the page URL + chosen pattern and exit 1. Related to existing TIER 1 "Better error messages when download fails" but the root fix is an explicit empty/multi-line check, not just a message.
+- **Add shellcheck to CI** - most correctness items above (unquoted vars, unchecked `cd`, missing `read -r`, no default case) are exactly what shellcheck flags. Add a `tests/` shellcheck run so regressions are caught automatically. This is the fix-and-prevent guard for the whole audit.
 
-- **Unquoted paths break on spaces** `[High / P0]` - `mkdir -p $installPath`, `cd $installPath`, `tar -xf $patt_native`, `rm $offURLfile`, `install $1` are all unquoted. Any install folder containing a space (e.g. `My Games`) breaks the install. Very common for GUI users who "Open in Terminal" from a Documents subfolder. Quote all expansions.
-
-- **`cd` failures not checked** `[High / P0]` - `cd $installPath`, `cd SSF2BetaLinux.*/`, `cd SSF2BetaWindows.32bit.*.portable` have no `|| exit`. If the glob does not match (failed download/extract), the script keeps running in the wrong directory: runs `./trust-ssf2.sh` that is not there, prints bashrc advice with the wrong `pwd`. Append `|| { echo "..."; exit 1; }` to every `cd`.
-
-- **No fail-fast (`set -euo pipefail`)** `[High / P1]` - the script plows through every failure (failed apt, failed wget, failed cd). This is the meta-cause behind most cascading-failure items. Add `set -euo pipefail` (with care around the intentional `isNotInstalled` non-zero returns and globs).
-
-- **Download filename vs extract pattern coupling** `[Medium / P1]` - real download uses `wget URL` (server-named file), but extraction uses `tar -xf $patt_native` / `unzip $patt_wine_port` globs. If the CDN's saved filename does not match the regex pattern, extraction silently finds nothing. Download with an explicit `-O` to a known name, or extract the actual downloaded filename.
-
-- **Invalid-choice exits 0** `[Low / P2]` - line ~324 `exit` after "Invalid choice!" returns success. Should be `exit 1` so callers/automation can detect it.
-
-- **`isNotInstalled` has no default case** `[Low / P2]` - if `$PKG_MANAGER` is ever unset/unexpected, the `case` falls through returning 0 (= "not installed"), so `install` always attempts. Add a `*)` arm.
-
-### Cross-distro correctness
-
-- **Universal deps use Debian names on all distros** `[Medium / P1]` - `install "libcanberra-gtk-module"`, `install "libnss3"`, `wine32`, `winbind` are Debian package names but are called unconditionally on dnf/pacman too. The header comment acknowledges this but the script still tries (and silently fails) the install. Map names per `$PKG_MANAGER` or skip+warn on non-apt. DUP-ish of TIER 1 distro support but specifically the universal-deps + wine32/winbind names.
-
-- **`apt update` errors hidden** `[Low / P2]` - `sudo apt update > /dev/null 2>&1` swallows mirror/network failures; Wine install then fails with no clue why. At least keep stderr or print a one-line status.
-
-### Robustness / safety
-
-- **No download integrity check** `[Medium / P2]` - archive is extracted with zero size/checksum validation. A truncated download (Ctrl+C, flaky wifi) yields a corrupt tar/zip and a confusing extract error. Add a minimum-size sanity check or publish+verify a checksum.
-
-- **No cleanup trap** `[Low / P3]` - Ctrl+C mid-run leaves `dwl.html` and partial archives behind (`rm $offURLfile` only runs on the success path). Add a `trap` to clean temp files on exit/interrupt.
-
-- **Partial-download collision on fallback** `[Low / P3]` - if first `wget` writes a partial file then the dot-form fallback runs, wget creates `file.1`; the extract glob can then match the wrong/partial file. Remove the failed partial before retrying.
-
-- **Log files accumulate forever** `[Low / P3]` - every run drops a new `ssf2-install-TIMESTAMP.log` in the launch dir, never pruned. Keep last N, or write into the `SSF2/` folder.
-
-### Stale references / docs
-
-- **Header + issue URL point to old repo** `[Medium / P1]` - usage block (line ~31) tells users to `wget .../DavoDC/LinuxFiles/raw/main/Scripts/SSF2/INSTALL_SSF2.sh` and the unsupported-distro message links `DavoDC/LinuxFiles/issues`. Repo is now `SSF2_Resources`. Users following the embedded instructions fetch from the wrong/stale path. Update both to the current repo.
-
-### Minor / cosmetic
-
-- **`read` without `-r`** `[Low / P3]` - `read chosen_version` and the prompts mangle backslashes; harmless for single letters but bad habit. Use `read -r`.
-
-- **"Press any key" actually needs Enter** `[Low / P3]` - `read -p "Press any key..."` waits for Enter, not any key. Either reword to "Press Enter" or use `read -n1`.
-
-- **`giveBashrcAdvice` nested quotes / mixed indent** `[Low / P3]` - `printYellow "\n    cd "$(pwd)""` has unescaped nested quotes (breaks display if pwd has spaces) and lines ~192-195 mix tabs and spaces. Cosmetic but the printed advice is wrong for spaced paths.
-
-- **Sourcing `/etc/os-release` pollutes script scope** `[Low / P3]` - `. /etc/os-release` injects `NAME`, `VERSION`, `ID`, etc. into the script. No current collision, but fragile if future vars are added. Parse with `grep`/`awk` or run in a subshell.
-
-### General improvements (beyond bug fixes)
-
-- **Pre-flight summary + confirm** - before doing anything, print: detected distro, package manager, chosen version, install path, resolved download URL. One confirmation, then run unattended. Makes failures diagnosable and the video clearer.
 - **`--help` / non-interactive flags** - `INSTALL_SSF2.sh --version native --yes` for scripted/CI use and faster repeat testing.
-- **Pre-check URL on the real path too** - the dry-run does a HEAD `http_code` check; do the same on Linux before the big download so a bad URL fails in 1s, not after a long timeout.
-- **`sudo -v` keepalive upfront** - single early `sudo -v` (refreshed in a background keepalive) instead of multiple scattered password prompts across separate `sudo` calls.
-- **shellcheck in CI** - most items above (quoting, unchecked cd, `read -r`, default case) are exactly what `shellcheck` flags. Add a `tests/` shellcheck run so regressions are caught automatically. This is the "fix AND prevent" guard for the whole audit.
+
+### Cosmetic / minor `[Low priority - polish pass]`
+
+- **"Press any key" actually needs Enter** - `read -p "Press any key..."` waits for Enter, not any key. Reword to "Press Enter" or use `read -n1`.
+- **`read` without `-r`** - `read chosen_version` mangles backslashes. Use `read -r`.
+- **`giveBashrcAdvice` nested quotes / mixed indent** - `printYellow "\n    cd "$(pwd)""` has unescaped nested quotes (output breaks if pwd contains spaces). Fix quoting and mixed tab/space indent on lines ~192-195.
+- **Partial-download collision on fallback** - if first `wget` writes a partial file, the dot-form fallback creates `file.1`; the extract glob can match the partial. Remove the failed partial before retrying.
+- **No cleanup trap** - Ctrl+C mid-run leaves `dwl.html` and partial archives behind. Add a `trap` to clean temp files on exit/interrupt.
+- **Log files accumulate** - every run drops a new `ssf2-install-TIMESTAMP.log` in the launch dir. Keep last N or move into the `SSF2/` folder.
+- **Sourcing `/etc/os-release` pollutes script scope** - `. /etc/os-release` injects `NAME`, `VERSION`, `ID`, etc. No current collision but fragile for future vars. Parse with `grep`/`awk` or run in a subshell.
 
 ---
 
 ## TIER 2 - MVP
 
-- **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Show complete process: downloading the repo, extracting, cd-ing into scripts folder, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
+- **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along. Show the complete process: downloading the repo, cd-ing into scripts, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
 
   Recording plan: on Linux Mint rig, uninstall any existing SSF2, then test each install type in this order - Wine Port, Wine Install, Native (uninstall between each). Combine the ANSI fix user-facing scan with this session. Record a clean final run of all 3 types for the video.
 
@@ -106,7 +96,7 @@ Static analysis of `scripts/INSTALL_SSF2.sh`. Each item tagged `[Severity / Prio
 
 ### Host SSF2 Player Guide on GitHub
 
-Player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description.
+Player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content has not changed in a long time. Link from repo and video description.
 
 ---
 
@@ -114,7 +104,7 @@ Player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWm
 
 **Status:** Idea / pre-development. PsnDth replied 2026-04-06: focus on detection only, no auto-fixes. Awaiting FlawTeam (dev_stacks) feedback.
 
-A desktop tool that diagnoses why SSF2 online play isn't working and guides the user through fixes.
+A desktop tool that diagnoses why SSF2 online play is not working and guides the user through fixes.
 
 - Run automated checks: firewall status, port availability, connection type, ping/speed (Ookla thresholds: ping <=35ms, dl >=15 Mbps, ul >=5 Mbps)
 - Identify likely causes from known error codes 000-009
@@ -136,7 +126,7 @@ Next actions:
 
 ## TIER 4 - FAR FUTURE (very low priority)
 
-- **Sync SSF2 player guide from Google Drive to GitHub** - Google Drive doesn't push changes so keeping the GitHub copy up to date needs a scheduled script or manual process.
+- **Sync SSF2 player guide from Google Drive to GitHub** - Google Drive does not push changes so keeping the GitHub copy up to date needs a scheduled script or manual process.
 
 - **Windows install script** - native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links.
 
