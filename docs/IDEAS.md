@@ -18,7 +18,7 @@ Improve and test the script as much as possible before recording. The video is a
 
   Recording plan: on Linux Mint rig, uninstall any existing SSF2, then test each install type in this order - Wine Port, Wine Install, Native (uninstall between each). Combine the ANSI fix user-facing scan with this session. Record a clean final run of all 3 types for the video.
 
-- **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Live sync between Google Drive and GitHub is a harder problem (far future - see TIER 4).
+- **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Ongoing sync between Google Drive and GitHub is far future - Google Drive doesn't push changes so it needs a scheduled script or manual process.
 
 ---
 
@@ -73,8 +73,6 @@ Next actions:
 ## TIER 4 - FAR FUTURE (very low priority)
 
 - **Windows install script** - native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links.
-
-- **Sync player guide to GitHub** - automate keeping the GitHub-hosted player guide in sync with Google Drive. Google Drive doesn't push changes, so this needs a script or scheduled job. Initial clone (TIER 1) comes first.
 
 - **AI opponent trained on replay data** - train a model on replay data from https://github.com/DavoDC/SSF2Replays. Smarter AI for people to play against, with online versus support.
 
