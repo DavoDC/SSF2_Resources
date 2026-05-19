@@ -2,10 +2,6 @@
 
 Ideas for scripts, tools, and improvements across the SSF2 ecosystem.
 
-Reference video (previous): https://www.youtube.com/watch?v=vHMe8zDKM9A
-
-Video goal: full end-to-end walkthrough for Linux newcomers - showcase the https://github.com/DavoDC/SSF2_Resources repo, show the complete process (downloading the repo, extracting, cd-ing into the scripts folder, running the install script through all 3 install types). Walk through the steps in `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Video description should link to the repo and the guide.
-
 ---
 
 ## Test Plan (for video)
@@ -46,7 +42,7 @@ Improve and test the script as much as possible before recording. The video is a
 
 ## TIER 1 - MVP
 
-- **Record YouTube video** - full end-to-end walkthrough per video goal above (HIGH PRIORITY)
+- **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Show complete process: downloading the repo, extracting, cd-ing into scripts folder, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
 
 - **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Live sync between Google Drive and GitHub is a harder problem (far future - see TIER 4).
 
