@@ -122,7 +122,7 @@ Full clone of the entire document - all 7 sections in original order, high-quali
 docs/Player_Guide/
   RAW/                   # gitignored - source exports live here
   index.md               # TOC + link to Google Drive source of truth
-  images/                # All 38 PNGs at full quality (via Git LFS)
+  images/                # All 38 PNGs, lossless-compressed (no Git LFS)
   01-setup.md
   02-configuration.md
   03-online-play.md
@@ -141,12 +141,12 @@ Run once before committing: `oxipng -o 4 docs/Player_Guide/images/*.png`
 (Install: `cargo install oxipng` or grab a binary from https://github.com/shssoichiro/oxipng/releases)
 
 **Conversion process (one-time, from the .md export):**
-1. `git lfs install` and add tracking rule for `docs/Player_Guide/images/*.png`
-2. Copy images from `RAW/SSF2 Player Guide Site/images/` -> `docs/Player_Guide/images/`
+1. Copy images from `RAW/SSF2 Player Guide Site/images/` -> `docs/Player_Guide/images/`
+2. Run lossless compression: `oxipng -o 4 docs/Player_Guide/images/*.png` (no Git LFS - plain git commit)
 3. Split `RAW/SSF2 Player Guide.md` into 7 section files by heading
 4. Fix image refs in each MD: `images/image1.png` style relative paths
 5. Write `index.md` with full TOC and Google Drive source link
-6. Commit MDs as text + images via Git LFS
+6. Commit MDs and compressed images as regular git files
 
 **Future sync (when Google Doc is updated):**
 Re-export to `RAW/`, re-run split/image-copy, diff the 7 MDs. Numbered filenames + same section order makes the diff readable.
