@@ -1,6 +1,6 @@
-# SSF2 Install Script Ideas
+# SSF2 Resources - Ideas
 
-Ideas and known issues for `scripts/INSTALL_SSF2.sh`.
+Ideas for scripts, tools, and improvements across the SSF2 ecosystem.
 
 Directive: `Claude_Workspace/ClaudeOnly/roadmap/directives/linux-files-yt.md`
 
@@ -13,6 +13,9 @@ Video goal: full end-to-end walkthrough for Linux newcomers - showcase the https
 ## Priority Fixes (before YouTube video)
 
 **Note:** Combine ANSI fix and user-facing scan in one Linux Mint session (both require testing all install types anyway).
+
+### Pre-video checks
+- Verify download links and CDN regex patterns still work (URLs live, correct filenames matched)
 
 ### Log file ANSI escape sequence issue + major user-facing scan
 - Run through each of the 3 install types manually on Linux Mint
@@ -64,6 +67,35 @@ Video should demonstrate all 3 types installing successfully.
 
 ---
 
+## SSF2 Online Connection Diagnoser (separate tool)
+
+**Status:** Idea / pre-development - PsnDth replied 2026-04-06 (detection only, no auto-fixes). Awaiting FlawTeam (dev_stacks) feedback.
+
+A desktop tool that diagnoses why SSF2 online play isn't working and guides the user through fixes.
+
+- Run automated checks: firewall status, port availability, connection type, ping/speed (Ookla thresholds: ping <=35ms, download >=15 Mbps, upload >=5 Mbps)
+- Identify likely causes based on known error codes 000-009
+- **Detection and diagnostics only** - report what is wrong, never auto-fix (antivirus flags, user trust). Walk user through manual steps.
+- Error 009: P2P impossible (firewall/ISP). Error 004: often paired with opponent 009. "P2P Connection Failed": falls back to MGN relay (USA servers = lag)
+- Tech stack: C# CLI app, GUI later if needed
+- Full player guide: https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit
+
+### Wireshark + Claude analysis idea
+Capture live SSF2 network traffic as .pcap, export via tshark to JSON, have Claude map the protocol - P2P handshake flow, relay fallback detection, port usage. Build a reference model of healthy vs degraded connections to drive the diagnoser's detection logic.
+
+Reference PDFs (in Discord): `Summary: Wireshark Capture Guide for P2P Gaming Troubleshooting.pdf`, `Port Trigger Setup for Gaming Devices.pdf`, `Capture Ports using Wireshark.pdf`
+Discord source: https://discord.com/channels/898064250398986262/909616189016260648/1474680695312875560
+
+### Next actions
+- [ ] Get feedback from FlawTeam (dev_stacks) - messaged 2026-04-06, awaiting reply
+- [ ] Review the 3 PDFs above before designing diagnostic checks
+- [ ] Design full diagnostic checks list
+
+---
+
 ## Far Future (very low priority)
 
 - **AI opponent trained on replay data** - train a model on replay data from https://github.com/DavoDC/SSF2Replays to create a smarter AI for people to play against, with online versus support
+- **Host SSF2 player guide on GitHub** - the player guide currently lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is doable now and useful (content hasn't changed in a long time). Long-term sync between Google Drive and GitHub is a harder problem - Google Drive doesn't push changes automatically, so two-way sync would need a script or manual process. Initial clone is the quick win; live sync is far future.
+- **Windows install script** - a native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links. Low priority.
+- **ReplaysAnalyser improvements** (https://github.com/DavoDC/ReplaysAnalyser): add summary dashboard / HTML report output; make usable for regular users (VS Installer, installation steps in README, test on secondary machine)
