@@ -13,7 +13,7 @@ A collection of resources for Super Smash Flash 2 - including scripts, configura
 
 ## Linux Install Script
 
-See [scripts/USAGE.md](scripts/USAGE.md).
+See [scripts/LINUX_INSTALL_GUIDE.md](scripts/LINUX_INSTALL_GUIDE.md).
 
 ## Development
 
