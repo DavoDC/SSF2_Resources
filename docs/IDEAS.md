@@ -10,25 +10,11 @@ Video goal: full end-to-end walkthrough for Linux newcomers - showcase the https
 
 ---
 
-## Priority Fixes (before YouTube video)
+## Test Plan (for video)
 
-**Note:** Combine ANSI fix and user-facing scan in one Linux Mint session (both require testing all install types anyway).
+**Note:** Combine ANSI fix and user-facing scan in one Linux Mint session - both require testing all install types anyway.
 
-### Pre-video checks
-- Verify download links and CDN regex patterns still work (URLs live, correct filenames matched)
-
-### Log file ANSI escape sequence issue + major user-facing scan
-- Run through each of the 3 install types manually on Linux Mint
-- Document any failures, missing dependencies, or unclear prompts
-- While testing, check logs for ANSI escape sequence issue and fix if found
-- ANSI issue: Script outputs color codes to log file (lines with URLs show `[0;33m` and `[0m` literally)
-- Fix: Detect if stdout is redirected to file, disable color codes when logging or strip them on output
-
----
-
-## Test Plan
-
-### Test Steps
+### Steps
 
 1. Linux Mint rig - uninstall any existing SSF2
 2. Run INSTALL_SSF2.sh, choose Native - verify installs and launches
@@ -36,9 +22,7 @@ Video goal: full end-to-end walkthrough for Linux newcomers - showcase the https
 4. Uninstall, run again, choose Wine Portable - verify
 5. Record video during a clean run of all 3
 
-### 3 Install Types (for video demo)
-
-NOTE THIS ORDER:
+### 3 Install Types - NOTE THIS ORDER
 
 | Type | Variable | Download | Description |
 |------|----------|----------|-------------|
@@ -46,56 +30,84 @@ NOTE THIS ORDER:
 | Wine Install | `wine_inst` | `SSF2BetaSetup.32bit.*.exe` | Windows installer via Wine |
 | Native | `native` | `SSF2BetaLinux.*.tar` | Linux native build |
 
-Video should demonstrate all 3 types installing successfully.
+---
 
+## Pre-Video Strategy
+
+Improve and test the script as much as possible before recording. The video is a showcase - the more polished the script, the better the impression. Aim to complete all TIER 0 items and as many TIER 2 items as practical before recording.
 
 ---
 
-## Future Ideas (post-video)
+## TIER 0 - BLOCKING (must do before video)
 
-- **Windows dry-run improvements** (follow-on from DONE feature in HISTORY.md):
-  - Bashrc advice shows repo path, not a meaningful simulated path - show `/home/user/SSF2` placeholder in dry-run
-  - `clear` at script start clears terminal during dev/testing - skip `clear` when DRY_RUN=true
-  - `install "wget"` shows a skip banner even though wget is unused in dry-run mode (curl is used) - minor wording fix
+- **Verify CDN links and regex patterns** - confirm download URLs are live and filename patterns still match current CDN filenames
 
-- Auto-detect if Wine is installed and skip Wine menu options if not
-- Better error messages if download fails (currently silent?)
-- **Auto-detect existing SSF2 install and prompt for action:** If SSF2 already installed, show menu: (R)einstall, (Remove) only, (E)xit. Reinstall and Remove must each have double y/n confirmation gate (not single prompt). Exit needs no confirmation. Better UX than separate uninstall command.
-- Support checking for script updates (compare version header against GitHub raw)
-- **Mine Discord for common install issues:** Trawl the Linux SSF2 Discord community server (manually or programmatically) for recurring installation problems people report. Use findings to harden the script - e.g. auto-detect architecture, handle edge cases that come up repeatedly, improve error messages for known failure modes. Real user pain points are the best bug tracker.
-- **`TRUST_SSF2_HERE.sh` - auto-detect correct run location:** Script only works if run from inside the SSF2 installation folder, but silently does the wrong thing if run elsewhere. Add a pre-check that detects whether native SSF2 is actually installed there by looking for files/folders that are always present in a native install (e.g. `data/`, `SSF2.x86_64` or similar). If not found, print a clear error and exit instead of silently writing a useless trust config.
+- **Fix ANSI escape sequences in log file** - script outputs raw color codes to log (e.g. `[0;33m`) when stdout is redirected via tee. Fix: detect if stdout is a file, strip or disable color codes for log output
 
 ---
 
-## SSF2 Online Connection Diagnoser (separate tool)
+## TIER 1 - MVP
 
-**Status:** Idea / pre-development - PsnDth replied 2026-04-06 (detection only, no auto-fixes). Awaiting FlawTeam (dev_stacks) feedback.
+- **Record YouTube video** - full end-to-end walkthrough per video goal above (HIGH PRIORITY)
+
+- **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Live sync between Google Drive and GitHub is a harder problem (far future - see TIER 4).
+
+---
+
+## TIER 2 - QUALITY (script improvements)
+
+- **`TRUST_SSF2_HERE.sh` - auto-detect correct run location** - script silently writes a useless trust config if run from the wrong folder. Add a pre-check: look for files always present in a native install (e.g. `data/`, `SSF2.x86_64`). If not found, print a clear error and exit.
+
+- **Auto-detect if Wine is installed** - skip Wine menu options entirely if Wine is not present on the system
+
+- **Auto-detect existing SSF2 install and prompt for action** - if SSF2 already installed, show menu: (R)einstall, (Remove) only, (E)xit. Reinstall and Remove must each require double confirmation. Exit needs no confirmation.
+
+- **Better error messages when download fails** - currently silent if wget fails. Show a clear message with the URL that failed.
+
+- **Check for script updates** - compare version header in script against GitHub raw to detect if a newer version is available
+
+- **Mine Discord for common install issues** - trawl the Linux SSF2 Discord community server (manually or programmatically) for recurring problems. Use findings to harden the script: auto-detect architecture, handle known edge cases, improve error messages for real failure modes.
+
+- **Dry-run: show placeholder home path** - bashrc advice currently shows the repo path, not a meaningful simulated path. Show `/home/user/SSF2` placeholder in dry-run mode instead.
+
+- **Dry-run: skip `clear` at startup** - `clear` wipes terminal during dev/testing. Skip it when `DRY_RUN=true`.
+
+- **Dry-run: fix misleading wget skip banner** - `install "wget"` shows a skip banner in dry-run even though wget is unused (curl is used instead). Fix the wording.
+
+---
+
+## TIER 3 - FUTURE TOOLS
+
+### SSF2 Online Connection Diagnoser
+
+**Status:** Idea / pre-development. PsnDth replied 2026-04-06: focus on detection only, no auto-fixes. Awaiting FlawTeam (dev_stacks) feedback.
 
 A desktop tool that diagnoses why SSF2 online play isn't working and guides the user through fixes.
 
-- Run automated checks: firewall status, port availability, connection type, ping/speed (Ookla thresholds: ping <=35ms, download >=15 Mbps, upload >=5 Mbps)
-- Identify likely causes based on known error codes 000-009
-- **Detection and diagnostics only** - report what is wrong, never auto-fix (antivirus flags, user trust). Walk user through manual steps.
-- Error 009: P2P impossible (firewall/ISP). Error 004: often paired with opponent 009. "P2P Connection Failed": falls back to MGN relay (USA servers = lag)
+- Run automated checks: firewall status, port availability, connection type, ping/speed (Ookla thresholds: ping <=35ms, dl >=15 Mbps, ul >=5 Mbps)
+- Identify likely causes from known error codes 000-009
+- Detection only - never auto-fix. Walk user through manual steps. (Reason: antivirus flags, user trust)
+- Error 009: P2P impossible (firewall/ISP). Error 004: often paired with opponent 009. "P2P Connection Failed": relay fallback via MGN USA servers = lag.
 - Tech stack: C# CLI app, GUI later if needed
-- Full player guide: https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit
 
-### Wireshark + Claude analysis idea
-Capture live SSF2 network traffic as .pcap, export via tshark to JSON, have Claude map the protocol - P2P handshake flow, relay fallback detection, port usage. Build a reference model of healthy vs degraded connections to drive the diagnoser's detection logic.
+**Wireshark + Claude analysis sub-idea:** Capture live SSF2 traffic as .pcap, export via tshark to JSON, have Claude map the protocol - P2P handshake, relay fallback, port usage. Build a reference model of healthy vs degraded connections to drive detection logic.
 
 Reference PDFs (in Discord): `Summary: Wireshark Capture Guide for P2P Gaming Troubleshooting.pdf`, `Port Trigger Setup for Gaming Devices.pdf`, `Capture Ports using Wireshark.pdf`
 Discord source: https://discord.com/channels/898064250398986262/909616189016260648/1474680695312875560
 
-### Next actions
-- [ ] Get feedback from FlawTeam (dev_stacks) - messaged 2026-04-06, awaiting reply
-- [ ] Review the 3 PDFs above before designing diagnostic checks
+Next actions:
+- [ ] Await FlawTeam (dev_stacks) feedback - messaged 2026-04-06
+- [ ] Review the 3 PDFs before designing diagnostic checks
 - [ ] Design full diagnostic checks list
 
 ---
 
-## Far Future (very low priority)
+## TIER 4 - FAR FUTURE (very low priority)
 
-- **AI opponent trained on replay data** - train a model on replay data from https://github.com/DavoDC/SSF2Replays to create a smarter AI for people to play against, with online versus support
-- **Host SSF2 player guide on GitHub** - the player guide currently lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is doable now and useful (content hasn't changed in a long time). Long-term sync between Google Drive and GitHub is a harder problem - Google Drive doesn't push changes automatically, so two-way sync would need a script or manual process. Initial clone is the quick win; live sync is far future.
-- **Windows install script** - a native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links. Low priority.
-- **ReplaysAnalyser improvements** (https://github.com/DavoDC/ReplaysAnalyser): add summary dashboard / HTML report output; make usable for regular users (VS Installer, installation steps in README, test on secondary machine)
+- **Windows install script** - native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links.
+
+- **Sync player guide to GitHub** - automate keeping the GitHub-hosted player guide in sync with Google Drive. Google Drive doesn't push changes, so this needs a script or scheduled job. Initial clone (TIER 1) comes first.
+
+- **AI opponent trained on replay data** - train a model on replay data from https://github.com/DavoDC/SSF2Replays. Smarter AI for people to play against, with online versus support.
+
+- **ReplaysAnalyser improvements** (https://github.com/DavoDC/ReplaysAnalyser) - add summary dashboard / HTML report output; create installer and installation steps in README; test on secondary machine for regular users.
