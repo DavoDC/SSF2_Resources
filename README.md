@@ -11,7 +11,7 @@ Super Smash Flash 2 resources - install script, tournament rulesets, and configu
 - **tests/** - developer tests for the install script
 - **docs/** - ideas and history for the install script
 
-## Install Script
+## Linux Install Script
 
 See [scripts/USAGE.md](scripts/USAGE.md).
 
