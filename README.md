@@ -2,7 +2,7 @@
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G31WKOCN)
 
-Super Smash Flash 2 resources - install script, tournament rulesets, and configuration files.
+A collection of resources for Super Smash Flash 2 - including scripts, configuration files, and more.
 
 ## Contents
 
