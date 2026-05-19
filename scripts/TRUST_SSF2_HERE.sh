@@ -13,7 +13,7 @@
 ### Usage:
 ### 1. Open the folder where your Native Linux SSF2 has been installed.
 ### 2. Right click in it and select "Open in Terminal".
-### 3. Paste in this command to get the script: "wget https://raw.githubusercontent.com/DavoDC/LinuxFiles/main/Scripts/SSF2/TRUST_SSF2_HERE.sh"
+### 3. Paste in this command to get the script: "wget https://raw.githubusercontent.com/DavoDC/SSF2_Resources/main/scripts/TRUST_SSF2_HERE.sh"
 ### 4. Enable the script using: "chmod u+x TRUST_SSF2_HERE.sh"
 ### 5. Run the script using the command: "./TRUST_SSF2_HERE.sh", and close the terminal
 ### 6. Restart SSF2 and it will load beyond 5%!!!
