@@ -59,6 +59,7 @@ Video should demonstrate all 3 types installing successfully.
 - Better error messages if download fails (currently silent?)
 - **Auto-detect existing SSF2 install and prompt for action:** If SSF2 already installed, show menu: (R)einstall, (Remove) only, (E)xit. Reinstall and Remove must each have double y/n confirmation gate (not single prompt). Exit needs no confirmation. Better UX than separate uninstall command.
 - Support checking for script updates (compare version header against GitHub raw)
+- **Mine Discord for common install issues:** Trawl the Linux SSF2 Discord community server (manually or programmatically) for recurring installation problems people report. Use findings to harden the script - e.g. auto-detect architecture, handle edge cases that come up repeatedly, improve error messages for known failure modes. Real user pain points are the best bug tracker.
 - **`TRUST_SSF2_HERE.sh` - auto-detect correct run location:** Script only works if run from inside the SSF2 installation folder, but silently does the wrong thing if run elsewhere. Add a pre-check that detects whether native SSF2 is actually installed there by looking for files/folders that are always present in a native install (e.g. `data/`, `SSF2.x86_64` or similar). If not found, print a clear error and exit instead of silently writing a useless trust config.
 
 ---
