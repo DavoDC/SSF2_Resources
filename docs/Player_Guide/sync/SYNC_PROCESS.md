@@ -38,6 +38,25 @@ docs/Player_Guide/
 Run `compress_images.sh` **before** `split_guide.py` on first setup.
 On re-sync, run both - images only need re-running if the guide has new screenshots.
 
+## oxipng setup (REQUIRED for compression)
+
+`compress_images.sh` will fall back to Pillow if oxipng is not found, but **oxipng gives 30-50% better compression**.
+
+**oxipng is NOT committed to git** - it lives in `RAW/` (gitignored). Current location:
+```
+docs/Player_Guide/RAW/oxipng-10.1.1-x86_64-pc-windows-msvc/oxipng.exe
+```
+
+To set up on a new machine:
+1. Download from https://github.com/oxipng/oxipng/releases
+2. Extract to `docs/Player_Guide/RAW/oxipng-<version>-x86_64-pc-windows-msvc/`
+3. `compress_images.sh` will find it automatically (it checks `$PATH` first, then falls back to Pillow)
+
+**IMPORTANT - after compression, verify images match the Google Doc before committing:**
+- Open `RAW/SSF2 Player Guide Site/SSF2PlayerGuide.html` in a browser
+- Spot-check 3-4 images against the committed `images/` folder
+- The HTML export is the authoritative image source - if an image looks wrong in the MD, cross-check the HTML
+
 ---
 
 ## Initial setup (already done)
