@@ -96,7 +96,59 @@ Script correctness bugs that will crash the demo or silently corrupt the install
 
 ### Host SSF2 Player Guide on GitHub
 
-Player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content has not changed in a long time. Link from repo and video description.
+Google Drive source: https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit
+
+Full clone of the entire document - all 7 sections in original order, high-quality images preserved. Must stay easy to compare against the Google Doc for future syncing.
+
+**What we have already (in `docs/Player_Guide/RAW/`, gitignored):**
+- `SSF2 Player Guide.md` - 2.8MB Google Doc export (best source for conversion)
+- `SSF2 Player Guide Site/SSF2PlayerGuide.html` - HTML export
+- `SSF2 Player Guide Site/images/` - 38 PNGs, 11MB total (largest: image4.png at 1.5MB)
+- `SSF2 Player Guide.pdf` - 12MB PDF (reference only)
+
+**Document structure (7 sections, exact Google Doc order):**
+```
+1. Setup          (1.1 Installation: Windows/Mac/Linux, 1.2 Download, 1.3 Updating)
+2. Configuration  (2.1 Keyboard, 2.2 Controllers, 2.3 Settings/Options)
+3. Online Play    (3.1-3.8: matchmaking, errors, P2P, Parsec, Discord)
+4. Replays        (4.1 Storage, 4.2 Finding, 4.3 Converting to Video)
+5. Resources      (5.1 General, 5.2 Competitive, 5.3 Character-Specific)
+6. Terminology
+7. Remarks
+```
+
+**Target folder layout:**
+```
+docs/Player_Guide/
+  RAW/                   # gitignored - source exports live here
+  index.md               # TOC + link to Google Drive source of truth
+  images/                # All 38 PNGs at full quality (via Git LFS)
+  01-setup.md
+  02-configuration.md
+  03-online-play.md
+  04-replays.md
+  05-resources.md
+  06-terminology.md
+  07-remarks.md
+```
+
+Numbered filenames (01-, 02-) mirror Google Doc section numbers - makes side-by-side comparison and future sync diffs easy.
+
+**Images - use Git LFS:**
+11MB of PNGs is too large for regular git (binary blobs re-committed in full on every change). Track `docs/Player_Guide/images/*.png` with Git LFS. GitHub gives 1GB free LFS storage - 11MB is trivial. Do NOT compress - preserve full quality.
+
+**Conversion process (one-time, from the .md export):**
+1. `git lfs install` and add tracking rule for `docs/Player_Guide/images/*.png`
+2. Copy images from `RAW/SSF2 Player Guide Site/images/` -> `docs/Player_Guide/images/`
+3. Split `RAW/SSF2 Player Guide.md` into 7 section files by heading
+4. Fix image refs in each MD: `images/image1.png` style relative paths
+5. Write `index.md` with full TOC and Google Drive source link
+6. Commit MDs as text + images via Git LFS
+
+**Future sync (when Google Doc is updated):**
+Re-export to `RAW/`, re-run split/image-copy, diff the 7 MDs. Numbered filenames + same section order makes the diff readable.
+
+**Link from:** README.md, install script header, video description.
 
 ---
 
