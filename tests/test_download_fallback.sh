@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Tests for downloadWithFallback() in INSTALL_SSF2.sh
-# Usage: bash test_download_fallback.sh
+# Usage: bash tests/test_download_fallback.sh
 # Run from any directory - tests use mocked wget
 
 PASS=0
@@ -22,7 +22,7 @@ wget() {
 export -f wget
 
 # --- source the function under test ---
-INSTALL_SCRIPT="$(dirname "$0")/../INSTALL_SSF2.sh"
+INSTALL_SCRIPT="$(dirname "$0")/../scripts/INSTALL_SSF2.sh"
 # Extract only downloadWithFallback (source the whole file is too invasive)
 # Instead, define the function inline - kept in sync with INSTALL_SSF2.sh manually
 source <(awk '/^function downloadWithFallback/,/^\}/' "$INSTALL_SCRIPT")
