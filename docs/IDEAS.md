@@ -120,6 +120,8 @@ Next actions:
 
 ## TIER 4 - FAR FUTURE (very low priority)
 
+- **David: review Player Guide MDs on GitHub in detail** - go through each section file on GitHub (start at https://github.com/DavoDC/SSF2_Resources/blob/main/docs/Player_Guide/01-setup.md) and note any rendering issues, wrong images, broken formatting, missing content, or other problems. Log findings as a feedback file or directly fix in a follow-up session.
+
 - **Verify Player Guide links** - check all links in index.md and the 7 section files: (1) index.md TOC links point to the correct .md files and anchor headings render/navigate correctly on GitHub, (2) external URLs in the guide are still live, (3) internal cross-section references resolve. Note: Google Doc anchor IDs (e.g. `{#1.-setup}`) may not work as GitHub anchor links - may need to replace with GitHub-style anchors derived from heading text.
 
 - **Verify Player Guide image placement** - some images may be mismatched (e.g. image2.png showed Format Factory instead of expected SSF2 content). Cross-check all 38 images against the HTML export (`RAW/SSF2 Player Guide Site/SSF2PlayerGuide.html`) in a browser to confirm each image appears in the correct section context.
