@@ -15,11 +15,4 @@
 
 ## Running tests
 
-Run from the repo root (works from any directory):
-
-```bash
-bash tests/test_download_fallback.sh
-bash tests/test_dry_run.sh
-```
-
-Tests use mocked `wget`/`curl` - no network calls, no sudo required.
+See `tests/README.md`.
