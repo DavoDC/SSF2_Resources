@@ -6,23 +6,13 @@ Ideas for scripts, tools, and improvements across the SSF2 ecosystem.
 
 ## TIER 0 - BLOCKING (must do before video)
 
-Improve and test the script as much as possible before recording. The video is a showcase - the more polished, the better. Aim to complete all TIER 0 and as many TIER 2 items as practical first.
+Improve and test the script as much as possible before recording. The video is a showcase - the more polished, the better. Aim to complete all TIER 0 and as many TIER 1 items as practical first.
 
 - **Fix ANSI escape sequences in log file** - script outputs raw color codes to log (e.g. `[0;33m`) when stdout is redirected via tee. Fix: detect if stdout is a file, strip or disable color codes for log output
 
 ---
 
-## TIER 1 - MVP
-
-- **Record YouTube video** (HIGH PRIORITY - do TIER 2 script improvements first) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Show complete process: downloading the repo, extracting, cd-ing into scripts folder, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
-
-  Recording plan: on Linux Mint rig, uninstall any existing SSF2, then test each install type in this order - Wine Port, Wine Install, Native (uninstall between each). Combine the ANSI fix user-facing scan with this session. Record a clean final run of all 3 types for the video.
-
-- **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Ongoing sync between Google Drive and GitHub is far future - Google Drive doesn't push changes so it needs a scheduled script or manual process.
-
----
-
-## TIER 2 - QUALITY (script improvements)
+## TIER 1 - SCRIPT IMPROVEMENTS (do before video)
 
 - **`TRUST_SSF2_HERE.sh` - auto-detect correct run location** - script silently writes a useless trust config if run from the wrong folder. Add a pre-check: look for files always present in a native install (e.g. `data/`, `SSF2.x86_64`). If not found, print a clear error and exit.
 
@@ -41,6 +31,16 @@ Improve and test the script as much as possible before recording. The video is a
 - **Dry-run: skip `clear` at startup** - `clear` wipes terminal during dev/testing. Skip it when `DRY_RUN=true`.
 
 - **Dry-run: fix misleading wget skip banner** - `install "wget"` shows a skip banner in dry-run even though wget is unused (curl is used instead). Fix the wording.
+
+---
+
+## TIER 2 - MVP
+
+- **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along using the same doc. Show complete process: downloading the repo, extracting, cd-ing into scripts folder, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
+
+  Recording plan: on Linux Mint rig, uninstall any existing SSF2, then test each install type in this order - Wine Port, Wine Install, Native (uninstall between each). Combine the ANSI fix user-facing scan with this session. Record a clean final run of all 3 types for the video.
+
+- **Host SSF2 player guide on GitHub** - player guide lives on Google Drive (https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54/edit). Initial clone to GitHub Wiki or GitHub Pages is a quick win - content hasn't changed in a long time. Link from repo and video description. Ongoing sync between Google Drive and GitHub is far future - Google Drive doesn't push changes so it needs a scheduled script or manual process.
 
 ---
 
