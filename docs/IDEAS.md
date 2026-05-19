@@ -6,6 +6,8 @@ Directive: `Claude_Workspace/ClaudeOnly/roadmap/directives/linux-files-yt.md`
 
 Reference video (previous): https://www.youtube.com/watch?v=vHMe8zDKM9A
 
+Video goal: showcase the https://github.com/DavoDC/SSF2_Resources repo and demonstrate the install script running through all 3 install types on Linux
+
 ---
 
 ## Priority Fixes (before YouTube video)
