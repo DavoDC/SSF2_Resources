@@ -1,6 +1,20 @@
-# SSF2 Install Script - Completed Work
+# SSF2 Resources - Completed Work
 
-History of improvements to `scripts/INSTALL_SSF2.sh`.
+History of completed items across the SSF2 Resources repo.
+
+---
+
+## 2026-05-19 - Host SSF2 Player Guide on GitHub
+
+**What:** Full clone of the Google Doc Player Guide committed to `docs/Player_Guide/`. All 7 sections split into numbered MDs (01-setup.md through 07-remarks.md) plus index.md. 38 images copied from the HTML export and Pillow-optimised (11MB -> 9MB) into `docs/Player_Guide/images/` - no Git LFS needed. Sync infrastructure in `docs/Player_Guide/sync/`: `split_guide.py` (splits .md export into 7 files, fixes image refs, strips base64 blobs), `compress_images.sh` (copies + compresses images, falls back to Pillow if oxipng absent), `SYNC_PROCESS.md` (re-sync steps for future Google Doc updates). `RAW/` is gitignored - only the processed files are in git.
+
+**Why it mattered:** The Player Guide lives in a Google Doc and is actively referenced by SSF2 players in the McLeod Gaming Discord every week. Hosting it on GitHub makes it searchable, linkable by section, diffable on future updates, and persistent if the Google Doc ever becomes unavailable. The numbered section split means `git diff` on a re-sync shows exactly what changed - much easier to review than a 2.8MB monolithic file.
+
+**Notes:** Images currently Pillow-compressed (9MB). Running `oxipng -o 4` when available would cut this further to ~5-7MB. Future full automation (auto-export + commit) tracked as TIER 4.
+
+---
+
+## History of improvements to `scripts/INSTALL_SSF2.sh`
 
 ---
 
