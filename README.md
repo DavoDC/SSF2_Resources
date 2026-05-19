@@ -6,16 +6,20 @@ Super Smash Flash 2 resources - install script, tournament rulesets, and configu
 
 ## Contents
 
-- **scripts/** - SSF2 install automation (`INSTALL_SSF2.sh`) supporting native Linux, Wine Portable, and Wine Installer builds
-- **files/** - desktop shortcuts, tournament rulesets, and misc config
-- **docs/** - development ideas and history for the install script
+- **scripts/** - `INSTALL_SSF2.sh` - installs SSF2 on Linux (Native, Wine Portable, Wine Installer)
+- **files/** - desktop shortcut, Aussie tournament ruleset
+- **tests/** - developer tests for the install script
+- **docs/** - ideas and history for the install script
 
 ## Install Script
 
-Run on any Linux distro:
+See [scripts/USAGE.md](scripts/USAGE.md) for full instructions.
 
+Quick start:
 ```bash
-bash INSTALL_SSF2.sh
+wget https://github.com/DavoDC/SSF2_Resources/raw/main/scripts/INSTALL_SSF2.sh
+chmod u+x INSTALL_SSF2.sh
+./INSTALL_SSF2.sh
 ```
 
 Supports all 3 install types: Native Linux, Wine Portable, Wine Installer. Windows users can use dry-run mode to test without a Linux machine.
