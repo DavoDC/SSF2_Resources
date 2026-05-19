@@ -134,8 +134,13 @@ docs/Player_Guide/
 
 Numbered filenames (01-, 02-) mirror Google Doc section numbers - makes side-by-side comparison and future sync diffs easy.
 
-**Images - use Git LFS:**
-11MB of PNGs is too large for regular git (binary blobs re-committed in full on every change). Track `docs/Player_Guide/images/*.png` with Git LFS. GitHub gives 1GB free LFS storage - 11MB is trivial. Do NOT compress - preserve full quality.
+**Images - lossless compression, no Git LFS needed:**
+Google Doc PNG exports are unoptimized (basic encoder, no size effort). `oxipng` (Rust-based, truly lossless - same pixels, better compression) typically saves 30-50% on these. Estimate: 11MB -> ~5-7MB, which is normal git range. No LFS complexity needed.
+
+Run once before committing: `oxipng -o 4 docs/Player_Guide/images/*.png`
+(Install: `cargo install oxipng` or download binary from https://github.com/shssoichiro/oxipng/releases)
+
+If a few images are still large after oxipng (check after running), those specific ones can go to Git LFS as a targeted fallback - but likely unnecessary.
 
 **Conversion process (one-time, from the .md export):**
 1. `git lfs install` and add tracking rule for `docs/Player_Guide/images/*.png`
