@@ -75,5 +75,3 @@ Next actions:
 - **Windows install script** - native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links.
 
 - **AI opponent trained on replay data** - train a model on replay data from https://github.com/DavoDC/SSF2Replays. Smarter AI for people to play against, with online versus support.
-
-- **ReplaysAnalyser improvements** (https://github.com/DavoDC/ReplaysAnalyser) - add summary dashboard / HTML report output; create installer and installation steps in README; test on secondary machine for regular users.
