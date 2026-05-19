@@ -57,3 +57,9 @@ Video should demonstrate all 3 types installing successfully.
 - Better error messages if download fails (currently silent?)
 - **Auto-detect existing SSF2 install and prompt for action:** If SSF2 already installed, show menu: (R)einstall, (Remove) only, (E)xit. Reinstall and Remove must each have double y/n confirmation gate (not single prompt). Exit needs no confirmation. Better UX than separate uninstall command.
 - Support checking for script updates (compare version header against GitHub raw)
+
+---
+
+## Far Future (very low priority)
+
+- **AI opponent trained on replay data** - train a model on replay data from https://github.com/DavoDC/SSF2Replays to create a smarter AI for people to play against, with online versus support
