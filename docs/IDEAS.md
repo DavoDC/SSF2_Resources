@@ -70,8 +70,6 @@ Script correctness bugs that will crash the demo or silently corrupt the install
 
 - **Link related SSF2 repos in README** - add a "Related Repos" or "SSF2 Ecosystem" section to the main README linking DavoDC/SSF2Replays (replay data) and any replay analyzer repos. Visitors arriving from the video should be able to navigate the full ecosystem from one landing page.
 
-- **Script: 2-minute quick path** - prioritize speed of first use. Identify and document the fastest possible path: browser ZIP download of repo (no git required), extract, cd into scripts/, run script. Aim for under 2 minutes from zero to game running. Update LINUX_INSTALL_GUIDE.md to lead with this fast path so a complete Linux newcomer can follow it with no prior setup. Keep the guide front-and-center in the video walkthrough.
-
 ### Meta / prevention
 
 - **Add shellcheck to CI** - most correctness items above (unquoted vars, unchecked `cd`, missing `read -r`, no default case) are exactly what shellcheck flags. Add a `tests/` shellcheck run so regressions are caught automatically. This is the fix-and-prevent guard for the whole audit.
@@ -92,9 +90,11 @@ Script correctness bugs that will crash the demo or silently corrupt the install
 
 ## TIER 2 - MVP
 
-**Prerequisite note:** Repo and guide must be in good shape before recording - the video will send people directly to the repo. Fix TIER 0 bugs, link the related repos, and confirm the guide leads with the 2-minute quick path first.
+**Prerequisite note:** Repo and guide must be in good shape before recording - the video will send people directly to the repo. Fix TIER 0 bugs and link the related repos first.
 
-- **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along. Show the complete process: downloading the repo, cd-ing into scripts, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
+- **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along. Show the complete process: downloading the repo, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
+
+  Demo flow: start on the GitHub repo page in browser, click Download ZIP, go to file manager, extract, open terminal, cd into scripts/, run the script. Show this exact sequence so viewers can follow step-by-step without any prior git knowledge.
 
   Recording plan: on Linux Mint rig, uninstall any existing SSF2, then test each install type in this order - Wine Port, Wine Install, Native (uninstall between each). Combine the ANSI fix user-facing scan with this session. Record a clean final run of all 3 types for the video.
 
