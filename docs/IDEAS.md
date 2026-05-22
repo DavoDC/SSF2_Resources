@@ -66,6 +66,12 @@ Script correctness bugs that will crash the demo or silently corrupt the install
 
 - **Dry-run: fix misleading wget skip banner** - `install "wget"` shows a dry-run skip banner even though wget is unused in dry-run (curl is used instead). Fix the wording.
 
+### Repo and guide improvements (do before video - video brings people to repo)
+
+- **Link related SSF2 repos in README** - add a "Related Repos" or "SSF2 Ecosystem" section to the main README linking DavoDC/SSF2Replays (replay data) and any replay analyzer repos. Visitors arriving from the video should be able to navigate the full ecosystem from one landing page.
+
+- **Script: 2-minute quick path** - prioritize speed of first use. Identify and document the fastest possible path: browser ZIP download of repo (no git required), extract, cd into scripts/, run script. Aim for under 2 minutes from zero to game running. Update LINUX_INSTALL_GUIDE.md to lead with this fast path so a complete Linux newcomer can follow it with no prior setup. Keep the guide front-and-center in the video walkthrough.
+
 ### Meta / prevention
 
 - **Add shellcheck to CI** - most correctness items above (unquoted vars, unchecked `cd`, missing `read -r`, no default case) are exactly what shellcheck flags. Add a `tests/` shellcheck run so regressions are caught automatically. This is the fix-and-prevent guard for the whole audit.
@@ -85,6 +91,8 @@ Script correctness bugs that will crash the demo or silently corrupt the install
 ---
 
 ## TIER 2 - MVP
+
+**Prerequisite note:** Repo and guide must be in good shape before recording - the video will send people directly to the repo. Fix TIER 0 bugs, link the related repos, and confirm the guide leads with the 2-minute quick path first.
 
 - **Record YouTube video** (HIGH PRIORITY) - full end-to-end walkthrough for Linux newcomers. Showcase the https://github.com/DavoDC/SSF2_Resources repo, walk through `scripts/LINUX_INSTALL_GUIDE.md` on screen so viewers can follow along. Show the complete process: downloading the repo, cd-ing into scripts, running the script through all 3 install types. Video description should link to the repo and the guide. Previous video: https://www.youtube.com/watch?v=vHMe8zDKM9A
 
@@ -128,7 +136,7 @@ Next actions:
 
 - **Auto-download oxipng in compress_images.sh** - currently oxipng must be manually placed in `RAW/`. Script could detect missing oxipng and download the correct release binary from https://github.com/oxipng/oxipng/releases automatically (detect OS/arch, download, verify hash).
 
-- **Sync SSF2 player guide from Google Drive to GitHub** - Google Drive does not push changes so keeping the GitHub copy up to date needs a scheduled script or manual process.
+- **Sync SSF2 player guide from Google Drive to GitHub** - before building anything custom, search online for existing Google Doc -> GitHub Markdown converters: check the `Docs to Markdown` Google Docs add-on, `gdoc2md`, Pandoc-based pipelines, and any maintained third-party tools. If a small existing tool does the job, use it. If a custom script is needed, decide scope: does it belong in this repo (single-use, SSF2-specific) or a standalone `gdoc-to-github-sync` repo (reusable across projects)? Probably stays here unless it grows beyond ~100 lines and is genuinely repo-agnostic. Google Drive does not push changes so the sync needs a scheduled script or manual trigger either way.
 
 - **Windows install script** - native Windows equivalent of `INSTALL_SSF2.sh`. Auto-detect 32 vs 64 bit, use mirror version links.
 
