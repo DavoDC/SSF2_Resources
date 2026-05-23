@@ -56,13 +56,5 @@ Follow the player guide setup section: [docs/Player_Guide/01-setup.md](docs/Play
 
 ---
 
-## Support
-
-If you have questions or suggestions:
-- **Player Guide:** DM or ping davo1776 on Discord
-- **Installation Issues:** Check [scripts/LINUX_INSTALL_GUIDE.md](scripts/LINUX_INSTALL_GUIDE.md) troubleshooting section
-
----
-
 **Like this project?** Consider supporting the work:
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G31WKOCN)
