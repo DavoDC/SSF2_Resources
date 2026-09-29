@@ -31,4 +31,4 @@ When the Google Doc is updated:
 3. Copy updated images to `images/`, run `oxipng -o 4 images/*.png` for lossless compression
 4. Commit the changes
 
-See `docs/IDEAS.md` for the full conversion process.
+See `sync/SYNC_PROCESS.md` for the full conversion process.

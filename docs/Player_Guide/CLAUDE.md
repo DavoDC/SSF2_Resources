@@ -10,7 +10,7 @@ This guide was built by David (davo1776) from real support questions in the McLe
 
 Source of truth: https://docs.google.com/document/d/1l5VrAaWmLozu9qnwdjz6MGA9GyurlkgNF8t72eZ4-54
 
-This folder is a clone of that Google Doc, split into sections for GitHub readability. When the Google Doc is updated, re-export and re-sync (see IDEAS.md for process).
+This folder is a clone of that Google Doc, split into sections for GitHub readability. When the Google Doc is updated, re-export and re-sync (see `sync/SYNC_PROCESS.md` for the process).
 
 ---
 

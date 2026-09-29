@@ -98,7 +98,7 @@ The diff in step 6 shows exactly what changed section-by-section - the main bene
 
 ---
 
-## Future automation (see IDEAS.md TIER 4)
+## Future automation
 
 A future script could chain these steps and commit automatically.
 Blocker: Google Docs API needs OAuth - not worth until sync is needed frequently.
